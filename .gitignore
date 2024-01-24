@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 localhost-key.pem
 localhost.pem
-src/firebase.tsx
+.src/firebase.tsx
