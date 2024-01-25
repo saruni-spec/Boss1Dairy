@@ -2,7 +2,15 @@ import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 const fetchData = async () => {
-  const data = [];
+  type Entry = {
+    phoneNumber: string;
+    name: string;
+    location: string;
+    balance: number;
+  };
+
+  const data: Entry[] = [];
+
   const querySnapshot = await getDocs(collection(db, "CustomerDetails"));
   querySnapshot.forEach((doc) => {
     console.log("doc.data()");

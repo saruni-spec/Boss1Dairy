@@ -1,4 +1,6 @@
 import React from "react";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,58 +9,27 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="container-fluid">
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo03"
-            aria-controls="navbarTogglerDemo03"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <a className="navbar-brand" href="#">
-            Boss-1 Dairy
-          </a>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  aria-current="page"
-                  href="/viewCustomers"
-                >
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/editCustomers">
-                  Add
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" aria-disabled="true">
-                  Disabled
-                </a>
-              </li>
-            </ul>
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              ></input>
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-          </div>
-        </div>
-      </nav>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/viewCustomers">Boss-1 Dairy</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="/viewCustomers">View Customer Details</Nav.Link>
+            <Nav.Link href="/editCustomers">Add Customer</Nav.Link>
+          </Nav>
+          <form className="d-flex" role="search">
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            ></input>
+            <button className="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </Navbar.Collapse>
+      </Navbar>
       <main>{children}</main>
     </div>
   );

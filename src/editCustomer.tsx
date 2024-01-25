@@ -6,12 +6,12 @@ import { db } from "./firebase";
 import Layout from "./Layout";
 
 const EditCustomer = () => {
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Read the form data
     const form = e.target;
-    const formData = new FormData(form);
+    const formData = new FormData(form as HTMLFormElement);
 
     // Or you can work with it as a plain object:
     const formJson = Object.fromEntries(formData.entries());

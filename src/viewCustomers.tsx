@@ -2,14 +2,35 @@ import Table from "./table";
 import fetchData from "./data";
 import { useMemo, useState, useEffect } from "react";
 import Layout from "./Layout";
+import axios from "axios";
 
 const ViewCustomers = () => {
-  const [data, setData] = useState([]);
+  type Entry = {
+    phoneNumber: string;
+    name: string;
+    location: string;
+    balance: number;
+  };
+
+  const [data, setData] = useState<Entry[]>([]);
 
   useEffect(() => {
     const fetchDataAsync = async () => {
       const result = await fetchData();
       setData(result);
+
+      try {
+        const mpesaResult = await axios.get("https://your-azure-function-url");
+        console.log(mpesaResult.data);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(
+            `Error calling M-Pesa Azure Function: ${error.message}`
+          );
+        } else {
+          console.error(`An unexpected error occurred: ${error}`);
+        }
+      }
     };
 
     fetchDataAsync();
@@ -26,7 +47,10 @@ const ViewCustomers = () => {
     ],
     []
   );
+  console.log("axios 1");
+  useEffect(() => {}, []); // Empty array means this effect runs once on mount and not on updates
 
+  console.log("axios 2");
   return (
     <Layout>
       <Table columns={columns} data={data} />
