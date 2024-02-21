@@ -6,15 +6,15 @@ import {
 } from "@azure/functions";
 import axios from "axios";
 
-export async function mpesa(
+export async function SandBox(
   request: HttpRequest,
   context: InvocationContext
 ): Promise<HttpResponseInit> {
   context.log(`Http function processed request for url "${request.url}"`);
 
-  const consumerKey = "yourConsumerKey";
-  const consumerSecret = "yourConsumerSecret";
-  const url =
+  const consumerKey: string = "axioOaWgT8LBwX4ZjfzmG7yEsIpX7N1h";
+  const consumerSecret: string = "V5CTiNxJi4xo6hcP";
+  const url: string =
     "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
   const auth =
@@ -25,16 +25,25 @@ export async function mpesa(
     const response = await axios.get(url, { headers: { Authorization: auth } });
     return { body: response.data };
   } catch (error) {
-    context.log(`Error calling M-Pesa API: ${error.message}`);
-    return {
-      status: 500,
-      body: `Error calling M-Pesa API: ${error.message}`,
-    };
-  } 
+    if (error instanceof Error) {
+      context.log(`Error calling M-Pesa API: ${error.message}`);
+      return {
+        status: 500,
+        body: `Error calling M-Pesa API: ${error.message}`,
+      };
+    } else {
+      // Handle any unexpected errors
+      context.log(`Unexpected error: ${error}`);
+      return {
+        status: 500,
+        body: `Unexpected error: ${error}`,
+      };
+    }
+  }
 }
 
 app.http("mpesa", {
   methods: ["GET", "POST"],
   authLevel: "anonymous",
-  handler: mpesa,
+  handler: SandBox,
 });

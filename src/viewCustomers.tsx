@@ -2,7 +2,6 @@ import Table from "./table";
 import fetchData from "./data";
 import { useMemo, useState, useEffect } from "react";
 import Layout from "./Layout";
-import axios from "axios";
 
 const ViewCustomers = () => {
   type Entry = {
@@ -20,8 +19,36 @@ const ViewCustomers = () => {
       setData(result);
 
       try {
-        const mpesaResult = await axios.get("https://your-azure-function-url");
-        console.log(mpesaResult.data);
+        fetch("https://bossbox.azurewebsites.net/api/myFuncs", {
+          method: "GET", // or 'POST'
+          headers: {
+            "Content-Type": "application/json",
+            // 'x-functions-key': '<your-functions-key>' // if required
+          },
+          // body: JSON.stringify(data), // include this line if you're making a POST request
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then((data) => {
+            if (!data) {
+              throw new Error("No response data!");
+            }
+            return JSON.parse(data);
+          })
+          .then((data) => {
+            if (data && data.body) {
+              console.log(`access is ${data.body}`);
+            } else {
+              console.log("Unexpected response data structure:", data);
+            }
+          })
+          .catch((error) => {
+            console.error("Error from fetch:", error);
+          });
       } catch (error) {
         if (error instanceof Error) {
           console.error(

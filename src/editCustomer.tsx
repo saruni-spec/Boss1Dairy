@@ -9,6 +9,45 @@ const EditCustomer = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    try {
+      fetch("https://bossbox.azurewebsites.net/api/Confirmation", {
+        method: "GET", // or 'POST'
+        headers: {
+          "Content-Type": "application/json",
+          // 'x-functions-key': '<your-functions-key>' // if required
+        },
+        // body: JSON.stringify(data), // include this line if you're making a POST request
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then((data) => {
+          if (!data) {
+            throw new Error("No response data!");
+          }
+          return JSON.parse(data);
+        })
+        .then((data) => {
+          if (data && data.body) {
+            console.log(`access is ${data.body}`);
+          } else {
+            console.log("Unexpected response data structure:", data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error from fetch:", error);
+        });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`Error calling M-Pesa Azure Function: ${error.message}`);
+      } else {
+        console.error(`An unexpected error occurred: ${error}`);
+      }
+    }
+
     // Read the form data
     const form = e.target;
     const formData = new FormData(form as HTMLFormElement);
